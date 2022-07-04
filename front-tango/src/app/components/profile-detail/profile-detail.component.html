@@ -1,0 +1,88 @@
+<section class="jumbotron jumboarticle" 
+    [style.background]="'url(../../assets/images/' + resProfile.profile + '.jpg)'" 
+    [style.backgroundSize]="'cover'" 
+    [style.backgroundPosition]="'center'" 
+    [style.minHeight.px]="250" *ngIf="weHaveResults">
+
+  <div class="jumbotron_bar">
+      <div class="container">
+          <div class="row">
+              <div class="col-md-12">
+                  <ol class="breadcrumb">
+                  <li><a href="#">{{ 'BREADCRUMB.ROOT' | translate }}</a></li>
+                  <li class="active">{{ 'BREADCRUMB.PROFILES' | translate }}</li>                  
+                  <li class="active" *ngIf="weHaveResults">{{resProfile.profile}}</li>
+                  <li class="active" *ngIf="weHaveResults && resProfile.subtitle">{{resProfile.subtitle}}</li>
+                  <li class="active" *ngIf="weHaveResults">{{resProfile.name}}</li>
+                </ol>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<div class="row m-t-2" *ngIf="!weHaveResults">
+    <app-loader></app-loader>
+</div>
+
+<section>
+  <div class="container">
+    <div class="row" *ngIf="weHaveResults">
+        <div class="col-md-10 col-md-offset-1">
+            <h6>{{resProfile.profile}} <span *ngIf="resProfile.subtitle">> {{resProfile.subtitle}}</span></h6>
+            <h1 class="m-t-0">
+                <button type="button" class="btn btn-primary btn-sm" (click)="goBack()">
+                    <i class="fa fa-backward"></i>
+                </button> {{resProfile.name}}
+            </h1>            
+        </div>
+    </div>    
+
+    <div class="row" *ngIf="weHaveResults">
+            <div class="col-md-6 col-md-offset-1">
+                <h6>{{resProfile.city}}, {{resProfile.state}}</h6>
+
+                <!-- Resume -->
+                <div [innerHtml]="resProfile.resume"></div>
+
+                <ul class="list-inline m-t-3" *ngIf="resProfile.tags">
+                    <li class="list-inline-item" *ngFor="let tag of resProfile.tags.split(',')">
+                    <a [routerLink]="['/profiles/tag', tag]" class="btn btn-primary btn-sm">{{tag}}</a>                     
+                    </li>
+                </ul> 
+            </div>
+            <div class="col-md-4">
+                <h5><strong>{{ 'TEMPLATE.PROFILESDETAIL.CONTACT' | translate }}</strong></h5>
+                <p>{{resProfile.phone}}</p>
+                <ul class="list-unstyled">
+                    <li><a href="mailto:{{resProfile.email}}">{{resProfile.email}}</a></li>
+                    <li *ngIf="resProfile.website"><a href="http://{{resProfile.website}}" target="_blank">{{resProfile.website}}</a></li>
+                    <li *ngIf="resProfile.socialLink"><a href="{{resProfile.socialLink}}" target="_blank"><i class="fa fa-facebook-official"></i></a></li>
+                </ul>
+
+            </div>          
+      </div>
+      <div class="row">
+          <div class="col-md-10 col-md-offset-1">        
+            <hr>
+            <div class="section-actions social-share">
+                  <p>Compartir en <br> redes sociales</p>
+                  <ul class="list-inline">
+                      <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                      <li><a href="#"><i class="fa fa-twitter "></i></a></li>
+                      <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </div>
+</section>
+
+<!-- 
+<section>
+  <app-by-profile 
+   [profileFilter]="'Master'">
+  </app-by-profile>
+</section> 
+-->
+  

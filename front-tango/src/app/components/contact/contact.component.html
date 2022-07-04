@@ -1,0 +1,59 @@
+<div class="container">
+
+    <ol class="breadcrumb">
+      <li>
+      <a href="">bistró</a></li>
+      <li class="active">Contact</li>
+    </ol>
+  
+    <section>
+        <div class="container">
+            <div class="form-group">
+                <label>Enter address</label>
+                <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+            </div>
+        </div>        
+    </section>
+  </div>
+
+  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" (mapClick)="onChooseLocation($event)" style="height: 300px;">
+    <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
+      (dragEnd)="markerDragEnd($event)"></agm-marker>
+  </agm-map>
+
+<!-- <agm-map 
+  [latitude]="latitude"
+  [longitude]="longitude"
+  [zoom]="zoom"
+  (mapClick)="mapClicked($event)" style="height: 300px;">
+
+  <agm-marker 
+      [latitude]="latitude"
+      [longitude]="longitude"
+      (dragEnd)="markerDragEnd($event)">
+      
+    <agm-info-window>
+      {{latitude}} / {{longitude}}      
+    </agm-info-window>
+    
+  </agm-marker>
+  
+  <agm-circle [latitude]="lat + 0.3" [longitude]="lng" 
+      [radius]="5000"
+      [fillColor]="'red'"
+      [circleDraggable]="true"
+      [editable]="true">
+  </agm-circle>
+
+</agm-map> -->
+
+<div class="container">
+    <section>
+        <div class="container">
+            <h5>Address: {{address}}</h5>
+            <div>Latitude: {{latitude}}</div>
+            <div>Longitude: {{longitude}}</div>
+            <div>Zoom: {{zoom}}</div>
+        </div>        
+    </section>
+</div>

@@ -1,0 +1,51 @@
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a routerLink="/home">{{ 'BREADCRUMB.ROOT' | translate }}</a></li>
+        <li class="active">{{ 'BREADCRUMB.BLOG' | translate }}</li>
+        <li class="active" *ngIf="weHaveResults">{{resBlog.title}}</li>
+    </ol>
+</div>
+
+<section>
+    <div class="container">
+        <div class="row" *ngIf="!weHaveResults">
+            <app-loader></app-loader>
+        </div>
+
+        <article class="content_format row" *ngIf="weHaveResults">
+            <div class="col-md-8 col-md-offset-2">
+                
+                <h1 class="m-b-0">
+                    <button type="button" class="btn btn-primary btn-sm" (click)="goBack()">
+                        <i class="fa fa-backward"></i>
+                    </button> {{resBlog.title}}
+                </h1>
+                <h5 class="m-t-0"><small><i>{{ 'FORM.LABEL.BY' | translate }} <b>{{resBlog.writer}}</b>, {{resBlog.date}}</i></small></h5>
+
+                <p>{{resBlog.introParagraph}}</p>
+
+                <!-- Resume -->
+                <div [innerHtml]="resBlog.paragraphs"></div>
+
+                <ul class="list-inline m-t-3">
+                    <li class="list-inline-item" *ngFor="let tag of resBlog.tags.split(',')">
+                        <a [routerLink]="['/bloglist/tag', tag]" class="btn btn-primary btn-sm">{{tag}}</a>
+                    </li>
+                </ul>
+
+                <hr>
+                <div class="row">
+                    <div class="section-actions col-md-7 social-share">
+                        <p>Compartir en <br> redes sociales</p>
+                        <ul class="list-inline">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter "></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </article>
+    </div>
+</section>

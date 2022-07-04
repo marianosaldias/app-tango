@@ -1,0 +1,4 @@
+
+# Don't track content of these folders
+backend/node_modules/
+front-tango/node_modules/

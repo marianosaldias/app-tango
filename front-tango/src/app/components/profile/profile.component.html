@@ -1,0 +1,237 @@
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a routerLink="/home">{{ 'BREADCRUMB.ROOT' | translate }}</a></li>
+        <li class="active">{{ 'BREADCRUMB.PROFILEMANAGER' | translate }}</li>
+    </ol>
+</div>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 m-b-1">
+                <div class="row">
+                    <div class="col-xs-6"><h4>Manager</h4></div>
+                    <div class="col-xs-6" align="right">
+                        <button class="btn btn-sm btn-primary mr-1 m-t-1" (click)="toggle()">
+                            {{ 'FORM.ADD.PROFILE' | translate }}  <i [ngClass]="(show)?'fa fa-minus':'fa fa-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        
+        <div class="row" *ngIf="show">
+            <div class="col-md-10 col-md-offset-1">
+                <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                    <input type="hidden" formControlName="_id" />
+                    <!-- <input type="hidden" formControlName="idUser" value="{{userId}}" />     -->
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.COUNTRYSTATE' | translate }}</label>
+                            <input type="text" formControlName="state" class="form-control" pattern="[a-zA-Z ]*" 
+                            [ngClass]="{ 'is-invalid': submitted && f.state.errors }" />
+
+                            <div *ngIf="submitted && f.state.errors" class="invalid-feedback">
+                                <div *ngIf="f.state.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.state.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.state.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.CITY' | translate }}</label>
+                            <input type="text" formControlName="city" class="form-control" pattern="[a-zA-Z ]*" 
+                            [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
+
+                            <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                                <div *ngIf="f.city.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.city.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.city.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div>                              
+                            </div>
+                        </div>
+                    </div>                    
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-3">
+                            <label>{{ 'FORM.LABEL.PROFILE' | translate }}</label>
+                            <select formControlName="profile" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.profile.errors }">
+                                <option value=""></option>
+                                <option value="Master">{{ 'FORM.SELECTIONVALUE.PROFILE.MASTER' | translate }}</option>
+                                <option value="Artist">{{ 'FORM.SELECTIONVALUE.PROFILE.ARTIST' | translate }}</option>
+                                <option value="Orchestra">{{ 'FORM.SELECTIONVALUE.PROFILE.ORCHESTRA' | translate }}</option>
+                                <option value="Musician">{{ 'FORM.SELECTIONVALUE.PROFILE.MUSICIAN' | translate }}</option>
+                                <option value="Dj">{{ 'FORM.SELECTIONVALUE.PROFILE.DJ' | translate }}</option>
+                                <option value="Danceroom">{{ 'FORM.SELECTIONVALUE.PROFILE.DANCEROOM' | translate }}</option>
+                                <option value="School">{{ 'FORM.SELECTIONVALUE.PROFILE.SCHOOL' | translate }}</option>
+                            </select>
+
+                            <div *ngIf="submitted && f.profile.errors" class="invalid-feedback">
+                                <div *ngIf="f.profile.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-4">
+                            <label>{{ 'FORM.LABEL.SUBTITLE' | translate }}</label>
+                            <input type="text" formControlName="subtitle" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.subtitle.errors }" />
+
+                            <!-- <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                <div *ngIf="f.name.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.name.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.name.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div>                             
+                            </div> -->
+                        </div>                          
+                        <div class="form-group col-sm-5">
+                            <label>{{ 'FORM.LABEL.NAME' | translate }}</label>
+                            <input type="text" formControlName="name" class="form-control" pattern="[a-zA-Z ]*" 
+                            [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+
+                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                <div *ngIf="f.name.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.name.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.name.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div>                             
+                            </div>
+                        </div>
+                      
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.PHONE' | translate }}</label>
+                            <input type="text" formControlName="phone" pattern="[^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$]*" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
+
+                            <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                                <div *ngIf="f.phone.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.phone.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.EMAIL' | translate }}</label>
+                            <input type="text" formControlName="email" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.email.errors.email">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.WEBSITE' | translate }}</label>
+                            <input type="url" formControlName="website" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.website.errors }" />
+
+                            <div *ngIf="submitted && f.website.errors" class="invalid-feedback">
+                                <div *ngIf="f.website.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.SOCIALNETLINK' | translate }}</label>
+                            <input type="text" formControlName="socialLink" class="form-control" />
+
+                            <!-- <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                                <div *ngIf="f.socialLink.errors.required">It is required</div>
+                                <div *ngIf="f.socialLink.errors.pattern">Take care of the characters</div>
+                                <div *ngIf="f.socialLink.errors.minlength">Take care of the lenght</div>
+                            </div> -->
+                        </div>
+                    </div>                       
+
+                    <div class="form-row row">
+                        <div class="form-group col-xs-12">
+                            <label>{{ 'FORM.LABEL.RESUME' | translate }}</label>
+                            <!-- <textarea formControlName="resume" class="form-control" rows="3"></textarea>  -->
+                            <angular-editor formControlName="resume" [config]="editorConfig" style="height: 350px;"></angular-editor>
+                        </div>           
+                        <!-- {{profileForm.value.resume}} -->
+                    </div>                   
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-12">
+                            <label>{{ 'FORM.LABEL.TAGS' | translate }}</label>
+                            <input type="text" formControlName="tags" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.tags.errors }" />
+
+                            <div *ngIf="submitted && f.tags.errors" class="invalid-feedback">
+                                <div *ngIf="f.tags.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                            </div>
+                        </div>                        
+                    </div>                    
+
+                    <div class="form-row row">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary mr-1">{{ 'FORM.BUTTON.SAVE' | translate }}</button>
+                            <button class="btn btn-secondary m-l-1" type="reset" (click)="onReset()">{{ 'FORM.BUTTON.RESET' | translate }}</button>
+                        </div>
+                    </div>
+
+                </form>             
+            </div>
+        </div>
+
+        <div class="row" *ngIf="!weHaveResults">
+            <app-loader></app-loader>
+        </div>
+
+        <div class="row m-t-1" *ngIf="weHaveResults">
+            <div class="col-md-10 col-md-offset-1" *ngIf="registersLenght > 0; else weDontHaveRegisters">
+                <table class="table table-striped" [mfData]="profileService.profiles" #mf="mfDataTable" [mfRowsOnPage]="5">
+                    <thead>
+                        <tr>
+                            <th>
+                                <mfDefaultSorter by="profile">{{ 'TABLECOL.PROFILE' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="name">{{ 'TABLECOL.NAME' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="state">{{ 'TABLECOL.STATE' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="city">{{ 'TABLECOL.CITY' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th width="150">
+                                <mfDefaultSorter></mfDefaultSorter>
+                            </th>                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let profile of mf.data">
+                            <td>{{profile.profile}}</td>
+                            <td>{{profile.name}}</td>
+                            <td>{{profile.state}}</td>
+                            <td>{{profile.city}}</td>
+                            <td class="text-center">
+                                <a (click)="editProfile(profile)">
+                                    <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
+                                </a>
+                                <a class="m-l-1" (click)="deleteProfile(profile._id)">
+                                    <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>                
+            </div>            
+        </div>
+        <ng-template #weDontHaveRegisters>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="alert alert-info">
+                        <p>{{ 'MESSAGES.NOTREGISTERSFOUND' | translate }} </p>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+    </div>
+</section>

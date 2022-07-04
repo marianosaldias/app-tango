@@ -1,0 +1,180 @@
+{
+    "BREADCRUMB": {
+        "ROOT": "HiTango",
+        "PROFILEMANAGER": "Administrador de Perfiles",
+        "EVENTMANAGER": "Administrador de Eventos",
+        "BLOGMANAGER": "Administrador de Blog",
+        "EVENTS": "Eventos",
+        "PROFILES": "Perfiles",
+        "BLOG": "Blogs"        
+    },    
+    "FORMLOGIN": {
+        "TITLE": "",
+        "PARAGRAPH": ""
+    },
+    "FORMREGISTER": {
+        "TITLE": "",
+        "PARAGRAPH": ""
+    },
+    "FORM": {
+        "ADD": {
+            "EVENT": "Nuevo evento",
+            "PROFILE": "Nuevo perfil",
+            "BLOG": "Nuevo articulo"
+        },        
+        "EVENT": {
+            "DESCRIPTION": "Descripcion",
+            "DETAILS": "Detalles",
+            "ADDRESS": "Direccion",
+            "CONTACT": "Contacto"
+        },          
+        "SELECT": "Select...",
+        "BUTTON": {
+            "SAVE": "Guardar",
+            "RESET": "Borrar"
+        },        
+        "ERROR": {
+            "REQUIRED": "Campo requerido",
+            "PATTERN": "Formato invalido",
+            "LENGHT": "Error en cantidad de caracteres"
+        },
+        "LABEL": {
+            "COUNTRYSTATE": "Pais/Estado",
+            "CITY": "Ciudad",
+            "PROFILE": "Perfil",
+            "NAME": "Nombre y apellido",
+            "SUBTITLE": "Detalle",
+            "PHONE": "Telefono",
+            "EMAIL": "E-mail", 
+            "WEBSITE": "Sitio Web",
+            "SOCIALNETLINK": "Link a red social",
+            "RESUME": "Detalle de carrera",
+            "ADDRESS": "Direccion",
+            "ZIPCODE": "Cod. Postal",
+            "ADDRESSNUMBER": "Numero",
+            "ONEDAYATWEEK": "Todos los",
+            "EVENT": "Evento",
+            "TITLE": "Titulo del evento",
+            "ORGANIZER": "Organiza",
+            "DATE": "Dia",
+            "TIME": "Time",       
+            "TIMETO": "a",     
+            "DATEINIT": "Inicia",
+            "DATEEND": "Finaliza",
+            "DATETO": "al",
+            "TIMEINIT": "Hora de inicio",
+            "TIMEEND": "Hora de fin",
+            "PROGRAM": "Programa",
+            "LANG": "Lenguaje",
+            "BLOGTITLE": "Titulo del articulo",
+            "INTRO": "Parrafo de introduccion",
+            "BODY": "Cuerpo de la nota",
+            "TAGS": "Palabras clave",
+            "WRITER": "Escritor/Escritora",
+            "BY": "por"
+        },
+        "ATTR": {
+            "PLACEHOLDERFILTER": "Filtrar por: nombre, ciudad, pais, etc."
+        },
+        "SELECTIONVALUE": {
+            "PROFILE": {
+                "ARTIST": "Artista",
+                "DJ": "Dj",
+                "MASTER": "Maestro/a",
+                "MUSICIAN": "Músico",
+                "ORCHESTRA": "Orquesta",
+                "DANCEROOM": "Sala de ensayo",
+                "SCHOOL": "Escuela"              
+            },
+            "EVENT": {
+                "MILONGA": "Milonga",
+                "EVENT": "Event",
+                "FEST": "Festival",
+                "CLASS": "Clase",
+                "MASTERCLASS": "Seminario"
+            },
+            "EVENTDAY": {
+                "D1": "Domingo",
+                "D2": "Lunes",
+                "D3": "Martes",
+                "D4": "Miercoles",
+                "D5": "Jueves",
+                "D6": "Viernes",
+                "D7": "Sabado"
+            },
+            "LAN": {
+                "ES": "Español",
+                "EN": "Ingles",
+                "FR": "Frances",
+                "IT": "Italiano",
+                "GR": "Aleman"
+            }     
+        }        
+    },
+    "MESSAGES": {
+        "NOTREGISTERSFOUND": "No se han encontrado registros"
+    },    
+    "NAVBAR": {
+        "LAN": {
+            "SPANISH": "ESPAÑOL",
+            "ENGLISH": "INGLES"
+        },
+        "MYPROFILES": "Mis perfiles",
+        "MYEVENTS": "Mi agenda",
+        "MYBLOG": "Mi blog",
+        "BLOG": "Blog",
+        "REGISTER": "Registro",
+        "LOGIN": "Iniciar Sesión",
+        "TITLE": "hiTango",
+        "ABOUTUS": "Acerca de",
+        "PROFILE": "Perfiles",
+        "EVENT": "Eventos",
+        "PROFILETYPE": {
+            "MASTER": "Maestros",
+            "ORCHESTRA": "Orquestas",
+            "MUSICIAN": "Músico",
+            "DJ": "DJs",
+            "ROOM": "Salas de ensayo",
+            "ARTIST": "Artistas",
+            "SCHOOL": "Escuelas"            
+        },
+        "EVENTTYPE": {
+            "MILONGA": "Milongas",
+            "EVENT": "Eventos",
+            "FEST": "Festivales",
+            "CLASS": "Clases",
+            "MASTERCLASS": "Seminarios"       
+        }        
+    },    
+    "FOOTER": {
+    },
+    "PAGINATOR": {
+        "ATTR": {
+            "FIRST": "Primera",
+            "PREVIOUS": "Anterior",
+            "NEXT": "Proxima",
+            "LAST": "Ultima"
+        }
+    },
+    "TABLECOL": {
+        "CITY": "Ciudad",
+        "STATE": "País/Estado",
+        "PROFILE": "Perfil",
+        "NAME": "Nombre",
+        "EVENT": "Tipo",
+        "TITLE": "Evento",
+        "BLOGTITLE": "Titulo",
+        "FIRSTPARAGRAPH": "Primer parrafo"
+    },
+    "TEMPLATE": {
+        "EVENTSDETAIL": {
+            "CONTACT": "Contacto",
+            "ORGANIZER": "Organizador",
+            "DATE": "Dia",
+            "TIME": "Hora"
+        },
+        "PROFILESDETAIL": {
+            "CONTACT": "Contacto"
+        }        
+    }
+}  

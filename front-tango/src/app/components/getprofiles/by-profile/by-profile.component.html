@@ -1,0 +1,72 @@
+<section>
+    <div class="container">
+
+        <div class="row m-b-2">
+            <div class="col-md-4 col-sm-12">
+                <h2>{{profileFilter}} <small>({{totalProfiles}})</small></h2>
+            </div>
+            <div class="col-md-4 col-sm-6 m-t-1" 
+                ng-show="state !== null" align="left">
+                <div class="btn-group" role="group" aria-label="Get profiles by" style="width: 100%;">
+                    <button type="button" class="btn btn-secondary" ng-show="state !== null" (click)="getProfilesByProfile()">All</button>
+                    <button type="button" class="btn btn-secondary" ng-show="state !== null" (click)="getProfilesByProfileAndState()">{{state}}</button>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-6  m-t-1">
+                <input 
+                    class="form-control" 
+                    type="text" 
+                    [(ngModel)]="inputFilter" (ngModelChange)="modelFilterChange($event)" 
+                    aria-label="filters" 
+                    placeholder="{{ 'FORM.ATTR.PLACEHOLDERFILTER' | translate }}"
+                >
+                <!-- <span class="input-group-btn">
+                    <button class="btn btn-primary" aria-label="Buscar" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                </span> -->
+            </div>            
+        </div>
+
+        <div class="row" *ngIf="!weHaveResults">
+            <app-loader></app-loader>
+        </div>
+
+        <div class="row" *ngIf="weHaveResults">        
+            <ul class="list-unstyled">
+                <li class="col-sm-4" 
+                        *ngFor="let profile of profileService.profiles | 
+                            filter: inputFilter | 
+                            paginate: { 
+                                itemsPerPage: 3, 
+                                currentPage: p, 
+                                totalItems: totalProfiles
+                            }">                   
+                    <a [routerLink]="['/profiles/id', profile._id]" 
+                        class="panel panel-default panel-icon panel-secondary">
+                        <div class="panel-heading"><i class="fa fa-file"></i></div>
+                        <div class="panel-body">
+                            <h5>{{profile.name}}</h5>
+                            <p class="text-muted">{{profile.state}} // {{profile.city}}</p>
+                        </div>
+                    </a>                        
+                </li>                
+            </ul>
+        </div>       
+        <div class="row">
+            <div class="col-xs-12" align="right">
+                <pagination-controls 
+                    class="pagination m-t-0 m-b-0" 
+                    (pageChange)="p = $event" 
+                    maxSize="5"
+                    directionLinks="true"
+                    autoHide="true"
+                    responsive="true"
+                    previousLabel="{{ 'PAGINATOR.ATTR.PREVIOUS' | translate }}"
+                    nextLabel="{{ 'PAGINATOR.ATTR.NEXT' | translate }}">
+                </pagination-controls>                
+            </div>
+        </div>
+
+    </div>
+ </section>
+
+

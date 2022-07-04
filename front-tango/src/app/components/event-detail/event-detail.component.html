@@ -1,0 +1,110 @@
+<section class="jumbotron jumboarticle" 
+    [style.background]="'url(../../assets/images/' + resEvent.eventType + '.jpg)'" 
+    [style.backgroundSize]="'cover'" 
+    [style.backgroundPosition]="'center'" 
+    [style.minHeight.px]="250" *ngIf="weHaveResults">
+
+    <div class="jumbotron_bar">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <ol class="breadcrumb">
+                        <li><a routerLink="/home">{{ 'BREADCRUMB.ROOT' | translate }}</a></li>
+                        <li class="active">{{ 'BREADCRUMB.EVENTS' | translate }}</li>
+                        <li class="active" *ngIf="weHaveResults">{{resEvent.title}}</li>
+                      </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="row m-t-2" *ngIf="!weHaveResults">
+    <app-loader></app-loader>
+</div>
+
+<section>
+    <div class="container">
+        <div class="row" *ngIf="weHaveResults">
+            <div class="col-md-10 col-md-offset-1">
+                <h6>{{resEvent.eventType}}</h6>
+                <h1 class="m-t-0">
+                    <button type="button" class="btn btn-primary btn-sm" (click)="goBack()">
+                        <i class="fa fa-backward"></i>
+                    </button> {{resEvent.title}}
+                </h1>
+            </div>
+        </div>
+
+        <div class="row m-t-1" *ngIf="weHaveResults">
+            <div class="col-md-6 col-md-offset-1">
+                <h6>{{resEvent.zipCode}} {{resEvent.city}}, {{resEvent.state}}</h6>
+
+                <!-- Program Event Detail -->
+                <div [innerHtml]="resEvent.program"></div>
+
+                <p class="text-muted m-t-1">
+                    <span><strong>{{ 'TEMPLATE.EVENTSDETAIL.DATE' | translate }}:</strong></span><br />     
+                    <span ng-if="event.eventDay != '0'">{{resEvent.eventDay}} // </span>
+                    <span ng-if="event.typeDate == 2">{{resEvent.dateInit}} {{ 'FORM.LABEL.DATETO' | translate }} {{resEvent.dateEnd}}</span><br />
+                    <span><strong>{{ 'TEMPLATE.EVENTSDETAIL.TIME' | translate }}:</strong></span><br />
+                    <span ng-show="event.typeDate == 2">{{resEvent.timeInit}} {{ 'FORM.LABEL.TIMETO' | translate }} {{resEvent.timeEnd}}</span>
+                </p>
+
+                
+                <p>sfdgsdfgsdf: {{days[1]}}</p>
+
+                <!-- 
+                    state           : { type: String, required: true },
+                    city            : { type: String, required: true },
+                    zipCode         : { type: String, required: false },
+                    eventType       : { 
+                        type: String, 
+                        required: true, 
+                        enum: ['Milonga', 'Event', 'Fest', 'Class', 'MasterClass'] 
+                    },
+                    title           : { type: String, required: true },
+                    address         : { type: String, required: true },
+                    addressNumber   : { type: String, required: true },
+                    phone           : { type: String, required: true },
+                    email           : { type: String, required: true },
+                    website         : { type: String, required: false },
+                    socialLink      : { type: String, required: false },
+                    program         : { type: String, required: false },
+                    organizer       : { type: String, required: true },
+                    typeDate        : { type: String, required: false },
+                    eventDay        : { type: String, required: false },
+                    dateInit        : { type: String, required: false },
+                    dateEnd         : { type: String, required: false },
+                    timeInit        : { type: String, required: false },
+                    timeEnd         : { type: String, required: false } 
+                -->
+            </div>
+            <div class="col-md-4">
+                <h5><strong>{{ 'TEMPLATE.EVENTSDETAIL.ORGANIZER' | translate }}</strong></h5>
+                <p>{{resEvent.organizer}}</p>
+                <h5><strong>{{ 'TEMPLATE.PROFILESDETAIL.CONTACT' | translate }}</strong></h5>
+                <p>{{resEvent.phone}}</p>
+                <ul class="list-unstyled">
+                    <li><a href="mailto:{{resEvent.email}}">{{resEvent.email}}</a></li>
+                    <li *ngIf="resEvent.website"><a href="http://{{resEvent.website}}" target="_blank">{{resEvent.website}}</a></li>
+                    <li *ngIf="resEvent.socialLink"><a href="{{resEvent.socialLink}}" target="_blank"><i class="fa fa-facebook-official"></i></a></li>
+                </ul>                
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">        
+                <hr>
+                <div class="section-actions social-share">
+                    <p>Compartir en <br> redes sociales</p>
+                    <ul class="list-inline">
+                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                        <li><a href="#"><i class="fa fa-twitter "></i></a></li>
+                        <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

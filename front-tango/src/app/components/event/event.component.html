@@ -1,0 +1,393 @@
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="#">{{ 'BREADCRUMB.ROOT' | translate }}</a></li>
+        <li class="active">{{ 'BREADCRUMB.EVENTMANAGER' | translate }}</li>
+    </ol>
+</div>
+
+<section class="p-b-0">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="row">
+                    <div class="col-xs-6"><h4>Manager</h4></div>
+                    <div class="col-xs-6" align="right">
+                        <button class="btn btn-sm btn-primary mr-1 m-t-1" (click)="toggle()">
+                            {{ 'FORM.ADD.EVENT' | translate }} <i [ngClass]="(show)?'fa fa-minus':'fa fa-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>    
+
+        <div class="row" *ngIf="!weHaveResults">
+            <app-loader></app-loader>
+        </div>        
+        
+        <div class="row" *ngIf="weHaveResults">
+            <div class="col-md-10 col-md-offset-1">
+                <div class="form-group">
+                    <label>Enter address</label>
+                    <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+                </div>
+            </div>
+        </div>    
+    </div>        
+</section>        
+
+<agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" (mapClick)="onChooseLocation($event)" style="height: 250px;" *ngIf="weHaveResults">
+    <agm-marker [latitude]="latitude" [longitude]="longitude" 
+        [markerDraggable]="true" 
+        (dragEnd)="markerDragEnd($event)" 
+        (mapClick)="markerDragEnd($event)">
+    </agm-marker>
+</agm-map>
+
+<!-- <div class="row">
+    <div class="col-xs-12">
+        <p class="m-t-1 m-l-1"><b>Lat:</b> {{latitude}} // <b>Lng:</b> {{longitude}}</p>
+    </div>
+</div>    -->
+
+<section>
+    <div class="container">        
+        <div class="row" *ngIf="show">
+            <div class="col-md-10 col-md-offset-1">
+                <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+                    <input type="hidden" formControlName="_id" />
+                    <!-- <input type="hidden" formControlName="idUser" value="{{userId}}" /> -->
+
+                    <div class="form-row row">
+                        <div class="col-xs-12"><h6>{{ 'FORM.EVENT.DESCRIPTION' | translate }}</h6></div>
+                        <div class="form-group col-sm-4">
+                            <label>{{ 'FORM.LABEL.EVENT' | translate }}</label>
+                            <select formControlName="eventType" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.eventType.errors }">
+                                <option value=""></option>
+                                <option value="Milonga">{{ 'FORM.SELECTIONVALUE.EVENT.MILONGA' | translate }}</option>
+                                <option value="Event">{{ 'FORM.SELECTIONVALUE.EVENT.EVENT' | translate }}</option>
+                                <option value="Fest">{{ 'FORM.SELECTIONVALUE.EVENT.FEST' | translate }}</option>
+                                <option value="Class">{{ 'FORM.SELECTIONVALUE.EVENT.CLASS' | translate }}</option>
+                                <option value="MasterClass">{{ 'FORM.SELECTIONVALUE.EVENT.MASTERCLASS' | translate }}</option>
+                            </select>
+
+                            <div *ngIf="submitted && f.eventType.errors" class="invalid-feedback">
+                                <div *ngIf="f.eventType.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-8">
+                            <label>{{ 'FORM.LABEL.TITLE' | translate }}</label>
+                            <input type="text" formControlName="title" class="form-control" pattern="[a-zA-Z ]*" 
+                            [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+
+                            <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                                <div *ngIf="f.title.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.title.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.title.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div>                             
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-6 col-xs-12">
+                            <label>{{ 'FORM.LABEL.ONEDAYATWEEK' | translate }}</label><br />
+                            <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                                <label class="btn" (click)="checkDateType(1)" [ngClass]="(showDaysSelect == true)?'btn-primary active':'btn-default'">
+                                  <input type="radio" formControlName="typeDate" value="1" checked> Day at week
+                                </label>
+                                <label class="btn" (click)="checkDateType(2)" [ngClass]="(showDaysSelect == false)?'btn-primary active':'btn-default'">
+                                  <input type="radio" formControlName="typeDate" value="2"> Range of Days
+                                </label>
+                              </div>              
+                        </div>
+      
+                        <div class="form-group col-sm-6 col-xs-12" *ngIf="showDaysSelect">
+                            <label>{{ 'FORM.LABEL.ONEDAYATWEEK' | translate }}</label>
+                            <select formControlName="eventDay" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.eventDay.errors }">
+                                <option value="0"></option>
+                                <option value="1">{{ 'FORM.SELECTIONVALUE.EVENTDAY.D1' | translate }}</option>
+                                <option value="2">{{ 'FORM.SELECTIONVALUE.EVENTDAY.D2' | translate }}</option>
+                                <option value="3">{{ 'FORM.SELECTIONVALUE.EVENTDAY.D3' | translate }}</option>
+                                <option value="4">{{ 'FORM.SELECTIONVALUE.EVENTDAY.D4' | translate }}</option>
+                                <option value="5">{{ 'FORM.SELECTIONVALUE.EVENTDAY.D5' | translate }}</option>
+                                <option value="6">{{ 'FORM.SELECTIONVALUE.EVENTDAY.D6' | translate }}</option>
+                                <option value="7">{{ 'FORM.SELECTIONVALUE.EVENTDAY.D7' | translate }}</option>
+                            </select>
+
+                            <!-- <div *ngIf="submitted && f.eventDay.errors" class="invalid-feedback">
+                                <div *ngIf="f.eventDay.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                            </div> -->
+                        </div>                        
+                        <div class="form-group col-sm-3 col-xs-6" *ngIf="!showDaysSelect">
+                            <label>{{ 'FORM.LABEL.DATEINIT' | translate }}</label>
+                            <input type="date" formControlName="dateInit" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.dateInit.errors }" />
+
+                            <div *ngIf="submitted && f.dateInit.errors" class="invalid-feedback">
+                                <div *ngIf="f.dateInit.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.dateInit.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-3 col-xs-6" *ngIf="!showDaysSelect">
+                            <label>{{ 'FORM.LABEL.DATEEND' | translate }}</label>
+                            <input type="date" formControlName="dateEnd" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.dateEnd.errors }" />
+
+                            <div *ngIf="submitted && f.dateEnd.errors" class="invalid-feedback">
+                                <div *ngIf="f.dateEnd.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.dateEnd.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>                        
+                    </div>                    
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-3 col-xs-6">
+                            <label>{{ 'FORM.LABEL.TIMEINIT' | translate }}</label>
+                            <input type="time" formControlName="timeInit" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.timeInit.errors }" />
+
+                            <div *ngIf="submitted && f.timeInit.errors" class="invalid-feedback">
+                                <div *ngIf="f.timeInit.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.timeInit.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-3 col-xs-6">
+                            <label>{{ 'FORM.LABEL.TIMEEND' | translate }}</label>
+                            <input type="time" formControlName="timeEnd" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.timeEnd.errors }" />
+
+                            <div *ngIf="submitted && f.timeEnd.errors" class="invalid-feedback">
+                                <div *ngIf="f.timeEnd.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.timeEnd.errors.email">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>       
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.ORGANIZER' | translate }}</label>
+                            <input type="text" formControlName="organizer" class="form-control" pattern="[a-zA-Z ]*" 
+                            [ngClass]="{ 'is-invalid': submitted && f.organizer.errors }" />
+
+                            <div *ngIf="submitted && f.organizer.errors" class="invalid-feedback">
+                                <div *ngIf="f.organizer.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.organizer.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.organizer.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div>                             
+                            </div>
+                        </div>                                          
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-12"><h6>{{ 'FORM.EVENT.ADDRESS' | translate }}</h6></div>
+                    </div>                    
+
+                    <!-- <div class="form-group">
+                        <label>Enter address</label>
+                        <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
+                    </div> -->
+
+                    <!-- <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom" (mapClick)="onChooseLocation($event)" style="height: 250px;">
+                        <agm-marker [latitude]="latitude" [longitude]="longitude" 
+                            [markerDraggable]="true" 
+                            (dragEnd)="markerDragEnd($event)" 
+                            (mapClick)="markerDragEnd($event)">
+                        </agm-marker>
+                    </agm-map>
+
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <p class="m-t-1"><b>Lat:</b> {{latitude}} // <b>Lng:</b> {{longitude}}</p>
+                        </div>
+                    </div>                        -->
+
+                    <div class="form-row row m-t-2">
+                        <div class="form-group col-sm-4">
+                            <label>{{ 'FORM.LABEL.COUNTRYSTATE' | translate }}</label>
+                            <input type="text" formControlName="state" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.state.errors }" />
+
+                            <div *ngIf="submitted && f.state.errors" class="invalid-feedback">
+                                <div *ngIf="f.state.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <!-- 
+                                <div *ngIf="f.state.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.state.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div> 
+                                -->
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-5">
+                            <label>{{ 'FORM.LABEL.CITY' | translate }}</label>
+                            <input type="text" formControlName="city" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
+
+                            <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                                <div *ngIf="f.city.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <!-- 
+                                <div *ngIf="f.city.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.city.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div>
+                                -->
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-3">
+                            <label>{{ 'FORM.LABEL.ZIPCODE' | translate }}</label>
+                            <input type="text" formControlName="zipCode" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.zipCode.errors }" />
+
+                            <div *ngIf="submitted && f.zipCode.errors" class="invalid-feedback">
+                                <div *ngIf="f.zipCode.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <!-- <div *ngIf="f.zipCode.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div> -->
+                                <!-- <div *ngIf="f.zipCode.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div> -->
+                            </div>
+                        </div>                        
+                    </div>          
+                    
+                    <div class="form-row row">
+                        <div class="form-group col-sm-8 col-xs-9">
+                            <label>{{ 'FORM.LABEL.ADDRESS' | translate }}</label>
+                            <input type="text" formControlName="address" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.address.errors }" />
+
+                            <div *ngIf="submitted && f.address.errors" class="invalid-feedback">
+                                <div *ngIf="f.address.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <!-- <div *ngIf="f.address.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div> -->
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-4 col-xs-3">
+                            <label>{{ 'FORM.LABEL.ADDRESSNUMBER' | translate }}</label>
+                            <input type="text" formControlName="addressNumber" pattern="[0-9]*" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.addressNumber.errors }" />
+
+                            <div *ngIf="submitted && f.addressNumber.errors" class="invalid-feedback">
+                                <div *ngIf="f.addressNumber.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.addressNumber.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>                        
+                    </div>                    
+
+                    <div class="form-row row">
+                        <div class="col-xs-12"><h6>{{ 'FORM.EVENT.CONTACT' | translate }}</h6></div>
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.PHONE' | translate }}</label>
+                            <input type="text" formControlName="phone" pattern="[^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$]*" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.phone.errors }" />
+
+                            <div *ngIf="submitted && f.phone.errors" class="invalid-feedback">
+                                <div *ngIf="f.phone.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.phone.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.EMAIL' | translate }}</label>
+                            <input type="text" formControlName="email" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.email.errors.email">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-6 col-xs-12">
+                            <label>{{ 'FORM.LABEL.WEBSITE' | translate }}</label>
+                            <input type="url" formControlName="website" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.website.errors }" />
+
+                            <div *ngIf="submitted && f.website.errors" class="invalid-feedback">
+                                <div *ngIf="f.website.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6 col-xs-12">
+                            <label>{{ 'FORM.LABEL.SOCIALNETLINK' | translate }}</label>
+                            <input type="text" formControlName="socialLink" class="form-control" />
+
+                            <!-- <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                                <div *ngIf="f.socialLink.errors.required">It is required</div>
+                                <div *ngIf="f.socialLink.errors.pattern">Take care of the characters</div>
+                                <div *ngIf="f.socialLink.errors.minlength">Take care of the lenght</div>
+                            </div> -->
+                        </div>
+                    </div>                       
+
+                    <div class="form-row row">
+                        <div class="col-xs-12"><h6>{{ 'FORM.EVENT.DETAILS' | translate }}</h6></div>
+                        <div class="form-group col-xs-12">
+                            <label>{{ 'FORM.LABEL.PROGRAM' | translate }}</label>
+                            <!-- <textarea formControlName="resume" class="form-control" rows="3"></textarea>  -->
+                            <angular-editor formControlName="program" [config]="editorConfig" style="height: 300px;"></angular-editor>
+                        </div>                        
+                    </div>                   
+
+                    <div class="form-row row">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary mr-1">{{ 'FORM.BUTTON.SAVE' | translate }}</button>
+                            <button class="btn btn-secondary m-l-1" type="reset" (click)="onReset()">{{ 'FORM.BUTTON.RESET' | translate }}</button>
+                        </div>
+                    </div>
+
+                </form>             
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="p-t-1">
+    <div class="container">
+        <div class="row" *ngIf="weHaveResults">
+            <div class="col-md-10 col-md-offset-1" *ngIf="registersLenght > 0; else weDontHaveRegisters">
+                <table class="table table-striped" [mfData]="eventService.events" #mf="mfDataTable" [mfRowsOnPage]="5">
+                    <thead>
+                        <tr>
+                            <th>
+                                <mfDefaultSorter by="eventType">{{ 'TABLECOL.EVENT' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="title">{{ 'TABLECOL.TITLE' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="state">{{ 'TABLECOL.STATE' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="city">{{ 'TABLECOL.CITY' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th width="150">
+                                <mfDefaultSorter></mfDefaultSorter>
+                            </th>                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let event of mf.data">
+                            <td>{{event.eventType}}</td>
+                            <td>{{event.title}}</td>
+                            <td>{{event.state}}</td>
+                            <td>{{event.city}}</td>
+                            <td class="text-center">
+                                <a (click)="editEvent(event)">
+                                    <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
+                                </a>
+                                <a class="m-l-1" (click)="deleteEvent(event._id)">
+                                    <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>                
+            </div>            
+        </div> 
+        <ng-template #weDontHaveRegisters>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="alert alert-info">
+                        <p>{{ 'MESSAGES.NOTREGISTERSFOUND' | translate }} </p>
+                    </div>
+                </div>
+            </div>
+        </ng-template>
+
+    </div>
+</section>    
+

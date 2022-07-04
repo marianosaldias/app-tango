@@ -1,0 +1,149 @@
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a routerLink="/home">{{ 'BREADCRUMB.ROOT' | translate }}</a></li>
+        <li class="active">{{ 'BREADCRUMB.BLOG' | translate }}</li>
+    </ol>
+</div>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>{{ 'BREADCRUMB.BLOG' | translate }} 
+                    <small>({{totalBlogs}})</small> 
+                    <span class="btn btn-xs btn-primary m-l-1" *ngIf="this.tag">{{this.tag}}</span>
+                </h2>
+            </div>            
+        </div>
+
+        <div class="row m-b-2">
+            <div class="col-md-6 col-sm-6 m-t-1" 
+                ng-show="state !== null" align="left">
+                <div class="btn-group" role="group" aria-label="Get profiles by">
+                    <button type="button" class="btn btn-secondary" ng-show="state !== null" (click)="getProfilesByProfile()">All</button>
+                    <button type="button" class="btn btn-secondary" ng-show="state !== null" (click)="getProfilesByProfileAndState()">{{state}}</button>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 m-t-1" *ngIf="totalBlogs > 0">
+                <input 
+                    class="form-control" 
+                    type="text" 
+                    [(ngModel)]="inputFilter" (ngModelChange)="modelFilterChange($event)" 
+                    aria-label="filters" 
+                    placeholder="{{ 'FORM.ATTR.PLACEHOLDERFILTER' | translate }}"
+                >
+                <!-- <span class="input-group-btn">
+                    <button class="btn btn-primary" aria-label="Buscar" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                </span> -->
+            </div>            
+        </div>
+
+        <div class="row" *ngIf="!weHaveResults">
+            <app-loader></app-loader>
+        </div>
+
+        <div class="row" *ngIf="weHaveResults"> 
+            <ul class="list-unstyled" *ngIf="totalBlogs > 0; else weDontHaveRegisters">
+                <!-- <li class="col-sm-4" 
+                    *ngFor="let blog of blogService.events | 
+                        filter: inputFilter | 
+                        angularPaginator: { id: 'profilesPaginator', itemsPerPage: 9, currentPage: currentPage }; let i = index"> -->
+                <li class="col-lg-12 col-md-12" 
+                    *ngFor="let blog of blogService.blogs | 
+                        filter: inputFilter | 
+                        paginate: { 
+                            itemsPerPage: 5, 
+                            currentPage: p, 
+                            totalItems: totalEvents
+                        }">        
+
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <!-- <a [routerLink]="['/blog/id', blog._id]" 
+                        class="panel panel-default panel-icon panel-secondary"> -->
+
+                        <h2><a [routerLink]="['/blog/id', blog._id]">{{blog.title}}</a></h2>
+                            <p class="text-muted">
+                            <i>{{ 'FORM.LABEL.BY' | translate }} <b>{{blog.writer}}</b>, {{blog.date}}</i>
+                        </p>
+                        <p>{{blog.introParagraph}}</p>
+                        <ul class="list-inline m-t-1">
+                            <li class="list-inline-item" *ngFor="let tag of blog.tags.split(',')">
+                                <button class="btn btn-primary btn-sm" (click)="getBlogsByTag(tag)">{{tag}}</button>
+                            </li>
+                        </ul>
+                        <!-- 
+                            idUser            : { type: String, required: true },
+                            state             : { type: String, required: true },
+                            city              : { type: String, required: true },
+                            title             : { type: String, required: true },
+                            introParagraph    : { type: String, required: true },
+                            paragraphs        : { type: String, required: true },
+                            date              : { type: String, required: false },
+                            lan               : { type: String, required: false },
+                            tags              : { type: String, required: false }
+                        -->
+                      </div>
+                    </div>
+
+                    <!-- 
+                        <a [routerLink]="['/events/id', event._id]" 
+                            class="panel panel-default panel-icon panel-secondary">
+                            <div class="panel-heading text-left">
+                                <h2>{{blog.title}}</h2>
+                                <p>{{blog.introParagraph}}</p>
+                            </div>
+                        </a> 
+                    -->
+
+                </li>                
+            </ul>
+        </div>       
+        <div class="row">
+            <div class="col-xs-12" align="right">
+                <!-- 
+                <pagination-controls 
+                    class="pagination m-t-0 m-b-0 f-right" 
+                    (pageChange)="pageChanged($event)"
+                    (pageBoundsCorrection)="pageChanged($event)"
+                    maxSize="5"
+                    directionLinks="true"
+                    autoHide="true"
+                    responsive="true"
+                    previousLabel="{{ 'PAGINATOR.ATTR.PREVIOUS' | translate }}"
+                    nextLabel="{{ 'PAGINATOR.ATTR.NEXT' | translate }}"
+                    screenReaderPaginationLabel="Pagination"
+                    screenReaderPageLabel="page"
+                    screenReaderCurrentLabel="You're on page">
+                </pagination-controls>
+                -->
+
+                <pagination-controls 
+                    class="pagination m-t-0 m-b-0" 
+                    (pageChange)="p = $event" 
+                    maxSize="5"
+                    directionLinks="true"
+                    autoHide="true"
+                    responsive="true"
+                    previousLabel="{{ 'PAGINATOR.ATTR.PREVIOUS' | translate }}"
+                    nextLabel="{{ 'PAGINATOR.ATTR.NEXT' | translate }}">
+                </pagination-controls>
+            </div>
+        </div>
+        <ng-template #weDontHaveRegisters>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-info">
+                            <p>{{ 'MESSAGES.NOTREGISTERSFOUND' | translate }} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>          
+
+    </div>
+ </section>
+
+

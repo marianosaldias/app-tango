@@ -1,0 +1,96 @@
+<header>
+	<nav class="navbar navbar-top navbar-default" role="navigation">
+		<div class="container">
+			<div>
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#main-navbar-collapse">
+					<span class="sr-only">Toggle navigation</span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<div class="navbar-header">
+					<a class="navbar-brand" routerLink="/home" routerLinkActive="active" aria-label="Tango">
+						<h1>{{ 'NAVBAR.TITLE' | translate }}</h1>
+					</a>
+				</div>
+				<div class="collapse navbar-collapse" id="main-navbar-collapse" data-seccion="Patrones">
+					<ul class="nav navbar-nav navbar-right">
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'NAVBAR.EVENT' | translate }} <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a routerLink="/events/Milonga" routerLinkActive="active">{{ 'NAVBAR.EVENTTYPE.MILONGA' | translate }}</a></li>
+								<li><a routerLink="/events/Event" routerLinkActive="active">{{ 'NAVBAR.EVENTTYPE.EVENT' | translate }}</a></li>
+								<li><a routerLink="/events/Fest" routerLinkActive="active">{{ 'NAVBAR.EVENTTYPE.FEST' | translate }}</a></li>
+								<li><a routerLink="/events/Class" routerLinkActive="active">{{ 'NAVBAR.EVENTTYPE.CLASS' | translate }}</a></li>
+								<li><a routerLink="/events/MasterClass" routerLinkActive="active">{{ 'NAVBAR.EVENTTYPE.MASTERCLASS' | translate }}</a></li>
+							</ul>
+						</li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'NAVBAR.PROFILE' | translate }} <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a routerLink="/profiles/master" routerLinkActive="active">{{ 'NAVBAR.PROFILETYPE.MASTER' | translate }}</a></li>
+								<li><a routerLink="/profiles/orchestra" routerLinkActive="active">{{ 'NAVBAR.PROFILETYPE.ORCHESTRA' | translate }}</a></li>
+								<li><a routerLink="/profiles/artist" routerLinkActive="active">{{ 'NAVBAR.PROFILETYPE.ARTIST' | translate }}</a></li>
+								<li><a routerLink="/profiles/musician" routerLinkActive="active">{{ 'NAVBAR.PROFILETYPE.MUSICIAN' | translate }}</a></li>
+								<li><a routerLink="/profiles/dj" routerLinkActive="active">{{ 'NAVBAR.PROFILETYPE.DJ' | translate }}</a></li>
+								<li><a routerLink="/profiles/school" routerLinkActive="active">{{ 'NAVBAR.PROFILETYPE.SCHOOL' | translate }}</a></li>
+								<li><a routerLink="/profiles/danceroom" routerLinkActive="active">{{ 'NAVBAR.PROFILETYPE.ROOM' | translate }}</a></li>
+							</ul>
+						</li>
+
+						<!--
+							https://www.youtube.com/watch?v=l_r9nRJ9YTk&t=3293s
+							1:02:12
+						 -->
+						 <!--
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">CRM <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a routerLink="/register" routerLinkActive="active">Register</a></li>
+								<li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+								<li><a routerLink="/" routerLinkActive="active" (click)="signOut()">Sign Out</a></li>
+							</ul>
+						</li>
+						-->
+
+						<li><a routerLink="/bloglist" routerLinkActive="active">{{ 'NAVBAR.BLOG' | translate }}</a></li>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'NAVBAR.ABOUTUS' | translate }} <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a routerLink="/commander" routerLinkActive="active">{{ 'NAVBAR.TITLE' | translate }}</a></li>
+								<li><a routerLink="/aboutus" routerLinkActive="active">{{ 'NAVBAR.ABOUTUS' | translate }}</a></li>
+							</ul>
+						</li>
+
+						<ng-container *ngIf="!authService.loggedIn(); else loggedIn">
+							<li><a routerLink="/register" routerLinkActive="active">{{ 'NAVBAR.REGISTER' | translate }}</a></li>
+							<li><a routerLink="/login" routerLinkActive="active">{{ 'NAVBAR.LOGIN' | translate }}</a></li>
+						</ng-container>
+						<ng-template #loggedIn>
+							<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{userName}} <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a routerLink="/profiles" routerLinkActive="active">{{ 'NAVBAR.MYPROFILES' | translate }}</a></li>
+									<li><a routerLink="/events" routerLinkActive="active">{{ 'NAVBAR.MYEVENTS' | translate }}</a></li>
+									<li><a routerLink="/blogs" routerLinkActive="active">{{ 'NAVBAR.MYBLOG' | translate }}</a></li>
+								</ul>
+							</li>							
+							
+							<li><a (click)="authService.logout()"><i class="fa fa-power-off"></i></a></li>
+						</ng-template>
+
+						<li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown">{{languaje}} <b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><a (click)="changeLang('es')">{{ 'NAVBAR.LAN.SPANISH' | translate }}</a></li>
+								<li><a (click)="changeLang('en')">{{ 'NAVBAR.LAN.ENGLISH' | translate }}</a></li>
+							</ul>
+						</li>		
+
+						<!-- <li><a routerLink="/register" routerLinkActive="active">Register</a></li>
+						<li><a routerLink="/login" routerLinkActive="active">Login</a></li>
+
+						<li><a (click)="authService.logout()">LogOut</a></li> -->
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</nav>
+</header>

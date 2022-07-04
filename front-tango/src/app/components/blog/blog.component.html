@@ -1,0 +1,209 @@
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="#">{{ 'BREADCRUMB.ROOT' | translate }}</a></li>
+        <li class="active">{{ 'BREADCRUMB.BLOGMANAGER' | translate }}</li>
+    </ol>
+</div>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 m-b-1">
+                <div class="row">
+                    <div class="col-xs-6"><h4>Manager</h4></div>
+                    <div class="col-xs-6" align="right">
+                        <button class="btn btn-sm btn-primary mr-1 m-t-1" (click)="toggle()">
+                            {{ 'FORM.ADD.BLOG' | translate }}  <i [ngClass]="(show)?'fa fa-minus':'fa fa-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>        
+        
+        <div class="row" *ngIf="show">
+            <div class="col-md-10 col-md-offset-1">
+                <form [formGroup]="blogForm" (ngSubmit)="onSubmit()">
+                    <input type="hidden" formControlName="_id" />
+                    <!-- <input type="hidden" formControlName="idUser" value="{{userId}}" />     -->
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.COUNTRYSTATE' | translate }}</label>
+                            <input type="text" formControlName="state" class="form-control" pattern="[a-zA-Z ]*" 
+                            [ngClass]="{ 'is-invalid': submitted && f.state.errors }" />
+
+                            <div *ngIf="submitted && f.state.errors" class="invalid-feedback">
+                                <div *ngIf="f.state.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.state.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.state.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.CITY' | translate }}</label>
+                            <input type="text" formControlName="city" class="form-control" pattern="[a-zA-Z ]*" 
+                            [ngClass]="{ 'is-invalid': submitted && f.city.errors }" />
+
+                            <div *ngIf="submitted && f.city.errors" class="invalid-feedback">
+                                <div *ngIf="f.city.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.city.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                                <div *ngIf="f.city.errors.minlength">{{ 'FORM.ERROR.LENGHT' | translate }}</div>                              
+                            </div>
+                        </div>
+                    </div>                    
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-4">
+                            <label>{{ 'FORM.LABEL.LANG' | translate }}</label>
+                            <select formControlName="lan" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.lan.errors }">
+                                <option value=""></option>
+                                <option value="ES">{{ 'FORM.SELECTIONVALUE.LAN.ES' | translate }}</option>
+                                <option value="EN">{{ 'FORM.SELECTIONVALUE.LAN.EN' | translate }}</option>
+                                <option value="FR">{{ 'FORM.SELECTIONVALUE.LAN.FR' | translate }}</option>
+                                <option value="IT">{{ 'FORM.SELECTIONVALUE.LAN.IT' | translate }}</option>
+                                <option value="GR">{{ 'FORM.SELECTIONVALUE.LAN.GR' | translate }}</option>
+                            </select>
+
+                            <div *ngIf="submitted && f.lan.errors" class="invalid-feedback">
+                                <div *ngIf="f.lan.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-8">
+                            <label>{{ 'FORM.LABEL.BLOGTITLE' | translate }}</label>
+                            <input type="text" formControlName="title" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+
+                            <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                                <div *ngIf="f.title.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="form-group col-xs-12">
+                            <label>{{ 'FORM.LABEL.INTRO' | translate }}</label>
+                            <angular-editor formControlName="introParagraph" [config]="editorConfigIntroParagraph"></angular-editor>
+                        </div>                        
+                    </div> 
+
+                    <div class="form-row row">
+                        <div class="form-group col-xs-12">
+                            <label>{{ 'FORM.LABEL.BODY' | translate }}</label>
+                            <angular-editor formControlName="paragraphs" [config]="editorConfig" style="height: 500px !important;"></angular-editor>
+                        </div>                        
+                    </div>
+                    
+                    <div class="form-row row">
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.WRITER' | translate }}</label>
+                            <input type="text" formControlName="writer" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.writer.errors }" />
+
+                            <div *ngIf="submitted && f.writer.errors" class="invalid-feedback">
+                                <div *ngIf="f.writer.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-6">
+                            <label>{{ 'FORM.LABEL.EMAIL' | translate }}</label>
+                            <input type="text" formControlName="email" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.email.errors.email">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>                        
+                    </div>                    
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-4">
+                            <label>{{ 'FORM.LABEL.DATE' | translate }}</label>
+                            <input type="date" formControlName="date" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.date.errors }" />
+
+                            <div *ngIf="submitted && f.date.errors" class="invalid-feedback">
+                                <div *ngIf="f.date.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                                <div *ngIf="f.date.errors.pattern">{{ 'FORM.ERROR.PATTERN' | translate }}</div>
+                            </div>
+                        </div>
+                        <div class="form-group col-sm-8">
+                            <label>{{ 'FORM.LABEL.TAGS' | translate }}</label>
+                            <input type="text" formControlName="tags" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.tags.errors }" />
+
+                            <div *ngIf="submitted && f.tags.errors" class="invalid-feedback">
+                                <div *ngIf="f.tags.errors.required">{{ 'FORM.ERROR.REQUIRED' | translate }}</div>
+                            </div>
+                        </div>                        
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary mr-1">{{ 'FORM.BUTTON.SAVE' | translate }}</button>
+                            <button class="btn btn-secondary m-l-1" type="reset" (click)="onReset()">{{ 'FORM.BUTTON.RESET' | translate }}</button>
+                        </div>
+                    </div>
+                </form>             
+            </div>
+        </div>
+
+        <div class="row" *ngIf="!weHaveResults">
+            <app-loader></app-loader>
+        </div>
+
+        <div class="row  m-t-1" *ngIf="weHaveResults"> 
+            <div class="col-md-10 col-md-offset-1" *ngIf="registersLenght > 0; else weDontHaveRegisters">
+                <table class="table table-striped table-responsive-poncho" [mfData]="blogService.blogs" #mf="mfDataTable" [mfRowsOnPage]="5">
+                    <thead>
+                        <tr>
+                            <th class="col-md-3 col-sm-3">
+                                <mfDefaultSorter by="title">{{ 'TABLECOL.BLOGTITLE' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th class="col-md-4 col-sm-4">
+                                <mfDefaultSorter by="introParagraph">{{ 'TABLECOL.FIRSTPARAGRAPH' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="state">{{ 'TABLECOL.STATE' | translate }}</mfDefaultSorter>
+                            </th>
+                            <th width="150">
+                                <mfDefaultSorter></mfDefaultSorter>
+                            </th>                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let blog of mf.data">
+                            <td>{{blog.title}}</td >
+                            <td>{{blog.introParagraph}}</td>
+                            <td>{{blog.state}}<br /><small>{{blog.city}}</small></td>
+                            <td class="text-center">
+                                <a (click)="editBlog(blog)">
+                                    <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
+                                </a>
+                                <a class="m-l-1" (click)="deleteBlog(blog._id)">
+                                    <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>                
+            </div>            
+        </div>
+        <ng-template #weDontHaveRegisters>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    <div class="alert alert-info">
+                        <p>{{ 'MESSAGES.NOTREGISTERSFOUND' | translate }} </p>
+                    </div>
+                </div>
+            </div>
+        </ng-template>        
+
+    </div>
+</section>

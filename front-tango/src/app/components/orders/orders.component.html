@@ -1,0 +1,137 @@
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="#">bistró</a></li>
+        <li class="active">Order Manager</li>
+    </ol>
+</div>
+
+<section>
+    <div class="container">
+        <!--
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 m-b-1">
+                <h4>Order Manager</h4>           
+            </div>
+        </div>
+        -->
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <form [formGroup]="orderForm" (ngSubmit)="onSubmit()">
+                    <input type="hidden" formControlName="_id" />
+                    <input type="hidden" formControlName="orderStatus" />
+                    <input type="hidden" formControlName="tableNumber" />
+                    <input type="hidden" formControlName="userId" />
+                    <input type="hidden" formControlName="userNick" />
+                    <input type="hidden" formControlName="prodId" />
+                    <input type="hidden" formControlName="prodType" />
+                    <input type="hidden" formControlName="prodName" />
+                    <input type="hidden" formControlName="prodPrice" />
+                    <input type="hidden" formControlName="prodQty" />    
+
+                    <div *ngIf="showOrderDetail" class="panel panel-default">
+                        <div class="col-xs-1 m-t-1">
+                            <h3 class="h1">{{orderService.selectedOrder.tableNumber}}</h3>
+                        </div>
+                        <div class="col-xs-7 m-t-1">
+                            <h3>{{orderService.selectedOrder.prodType}}</h3>
+                            <p>{{orderService.selectedOrder.prodName}}</p>     
+                        </div>
+                        <div class="col-xs-3 m-t-1">
+                            <div class="form-row row">
+                                <div class="form-group">
+                                    <select formControlName="orderStatus" class="form-control">
+                                        <option value="Ordered">Ordered</option>
+                                        <option value="In Progress">In Progress</option>
+                                        <option value="Ready">Ready</option>
+                                        <option value="Delivered">Delivered</option>
+                                        <option value="Closed">Closed</option>
+                                        <option value="Cancelled">Cancelled</option>
+                                    </select>
+                                </div>  
+                            </div>                            
+                        </div>   
+                        <div class="col-xs-1 m-t-1">
+                            <button class="btn btn-primary btn-sm mr-1"><i class="fa fa-save"></i></button>
+                        </div>    
+                        <div class="clearfix"></div>                                                 
+                    </div>
+                    <div *ngIf="orderSuccess">
+                        <div class="alert alert-success">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+                            <p>The order <b>{{orderService.selectedOrder.prodName}}</b> for table <b>{{orderService.selectedOrder.tableNumber}}</b> have changed its status.</p>
+                        </div>
+                    </div>                            
+                             
+                </form>             
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <table class="table table-striped" [mfData]="orderService.orders" #mf="mfDataTable" [mfRowsOnPage]="5" *ngIf="orderCounter > 0; else noRecord">
+                    <thead>
+                        <tr>
+                            <th>
+                                <mfDefaultSorter by="tableNumber">T</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="userNick">Nick</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="prodName">Poduct</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="orderStatus">Status</mfDefaultSorter>
+                            </th>
+                            <th class="text-right">
+                                Qty
+                            </th>                            
+                            <th width="150">
+                                <mfDefaultSorter></mfDefaultSorter>
+                            </th>               
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let order of mf.data">
+                            <td>{{ order.tableNumber }}</td>
+                            <td>{{ order.userNick }}</td>
+                            <td>{{ order.prodType }}: {{ order.prodName }}</td>
+                            <td>{{ order.orderStatus }}</td>
+                            <td class="text-right">{{ order.prodQty }}</td>
+                            <td class="text-center">
+                                <a (click)="editOrder(order)">
+                                    <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
+                                </a>
+                                <a class="m-l-1" (click)="deleteOrder(order._id)">
+                                    <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                                </a>                                
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table> 
+
+                <ng-template #noRecord>
+                    <div class="alert alert-warning">
+                        <p>There are not records.</p>
+                    </div>
+                    <div align="right">
+                        <a (click)="changeTableStatus()">
+                            <button class="btn btn-primary btn-md"><i class="fa fa-edit"></i> Change Status</button>
+                        </a>                    
+                    </div>
+                </ng-template>                  
+            </div>            
+        </div>
+
+    </div>
+   
+
+</section>

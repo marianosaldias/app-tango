@@ -1,0 +1,23 @@
+<app-navbar [usr]="userName"></app-navbar>
+
+<!--
+<div style="text-align:center">
+    <h1>
+        Welcome to {{ title }}!
+    </h1>
+    <p>{{ 'HELLOWORLD' | translate }}</p>
+    <p [innerHTML]="'GREETINGS' | translate:{name: 'nicolas'}"></p>
+    <label>
+        change
+        <select #langSelect (change)="utils.changeLang(langSelect.value)">
+        <option *ngFor="let lang of langs" [value]="lang">
+            {{ lang }}
+        </option>
+        </select>
+    </label>
+</div> 
+-->
+
+<router-outlet></router-outlet>
+
+<app-footer></app-footer>

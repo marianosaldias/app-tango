@@ -1,0 +1,162 @@
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="#">bistró</a></li>
+        <li class="active">My Order</li>
+    </ol>
+</div>
+
+<section>
+    <div class="container">
+        <div class="row m-b-1">
+            <div class="col-md-10 col-md-offset-1">
+                <ul class="nav nav-icons nav-icons-selected">
+                    <li class="active col-xs-2" *ngFor="let table of tableService.tables">
+                        <button class="btn" [ngClass]="{
+                            'bg-maiz': tableSelected == table,
+                            'bg-danger': table.tableStatus == 'Open',
+                            'bg-success': table.tableStatus == 'Free'
+                            }" 
+                            (click)="selectTable(table);" style="width: 100%; color:white;">
+                            <span [ngClass]="{
+                                'bg-maiz': tableSelected == table,
+                                'bg-danger': table.tableStatus == 'Open',
+                                'bg-success': table.tableStatus == 'Free'
+                                }">{{table.tableNumber}}</span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>        
+        
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <form [formGroup]="myOrderForm" (ngSubmit)="onSubmit()">
+                    <input type="hidden" formControlName="orderStatus" />
+                    <input type="hidden" formControlName="tableNumber" />
+                    <input type="hidden" formControlName="userId" />
+                    <input type="hidden" formControlName="userNick" />
+                    <input type="hidden" formControlName="prodId" />
+                    <input type="hidden" formControlName="prodType" />
+                    <input type="hidden" formControlName="prodName" />
+                    <input type="hidden" formControlName="prodPrice" />
+
+                    <div *ngIf="showMyOrderDetail" class="panel panel-default">
+                        <div class="col-xs-1 m-t-1">
+                            <h3 class="h1">{{tableSelected.tableNumber}}</h3>
+                        </div>  
+                        <div class="col-xs-8 m-t-1">
+                            <h3 class="h2" [ngClass]="{'text-success':productService.selectedProduct.status == 'Happy'}">{{productService.selectedProduct.type}} / {{productService.selectedProduct.name}}</h3>
+                            <p>
+                                {{productService.selectedProduct.description}}<br />
+                                <span class="" [ngClass]="{'text-success':productService.selectedProduct.status == 'Happy'}">
+                                    ${{productService.selectedProduct.status == 'Happy' ? productService.selectedProduct.price * productService.selectedProduct.happyIndex : productService.selectedProduct.price}}
+                                </span>
+                            </p>
+                        </div>                                    
+                        <div class="col-xs-2 m-t-1">
+                            <div class="form-row row">
+                                <div class="form-group col-sm-12">
+                                    <input type="number" formControlName="prodQty" min="1" class="form-control" pattern="^([1-9]|[1-9][0-9])?$" />
+        
+                                    <!--
+                                    <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
+                                        <div *ngIf="f.prodQty.errors.required">Price is required</div>
+                                        <div *ngIf="f.prodQty.errors.pattern">Only numbers</div>
+                                    </div>
+                                    -->
+                                </div> 
+                            </div> 
+                        </div>
+                        <div class="col-xs-1">
+                            <div class="form-row row">
+                                <button class="btn btn-primary btn-sm mr-1 m-t-1"><i class="fa fa-paper-plane"></i></button>
+                            </div>  
+                        </div>  
+                        <div class="clearfix"></div>
+                    </div>
+                    <div *ngIf="orderSuccess">
+                        <div class="alert alert-success">
+                            <p>The order <b>{{productService.selectedProduct.type}} / {{productService.selectedProduct.name}}</b> has been created with success!</p>
+                        </div>
+                    </div>
+ 
+                </form>             
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 m-b-1">
+                <p>Filter by:</p>
+                <ul class="list-inline">
+                    <li *ngFor="let productType of productTypes">
+                        <button type="button" class="btn btn-success btn-sm"
+                        [ngClass]="{
+                            'btn-success': productType.value == '',
+                            'btn-primary': productType.value != ''
+                            }" 
+                        (click)="setFilter(productType.value)">{{productType.label}}</button>
+                    </li>
+                </ul>
+            </div>
+        </div>    
+            
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <table class="table table-striped" [mfData]="productService.products" #mf="mfDataTable" [mfRowsOnPage]="5" *ngIf="productCounter > 0; else noRecord">
+                    <thead>
+                        <tr>
+                            <th>
+                                <mfDefaultSorter by="type">Type</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="name">Product</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="status">Status</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="price">Price</mfDefaultSorter>
+                            </th>
+                            <th width="75">
+                                <mfDefaultSorter></mfDefaultSorter>
+                            </th>                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of mf.data">
+                            <td>{{product.type}}</td>
+                            <td>
+                                {{ product.name }}<br />
+                                <small>{{ product.description }}</small>                                
+                            </td>
+                            <td class="" [ngClass]="{'text-success':product.status == 'Happy'}">{{product.status}}</td>
+                            <td class="text-right" [ngClass]="{'text-success':product.status == 'Happy'}">
+                                ${{product.status == 'Happy' ? product.price * product.happyIndex : product.price}}
+                            </td>
+                            <td class="text-center">
+                                <a (click)="editOrder(product)" *ngIf="showOrderBtn">
+                                    <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>  
+
+                <ng-template #noRecord>
+                    <div class="alert alert-warning">
+                        <p>There are not records.</p>
+                    </div>
+                </ng-template>                
+
+            </div>
+        </div>   
+    </div>
+
+</section>

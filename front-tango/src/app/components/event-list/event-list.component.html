@@ -1,0 +1,123 @@
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a routerLink="/home">{{ 'BREADCRUMB.ROOT' | translate }}</a></li>
+        <li class="active">{{ 'BREADCRUMB.EVENTS' | translate }}</li>
+        <li class="active">{{event}}</li>
+    </ol>
+</div>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>{{event}} <small>({{totalEvents}})</small></h2>
+            </div>            
+        </div>
+
+        <div class="row m-b-2">
+            <div class="col-md-6 col-sm-6 m-t-1" 
+                ng-show="state !== null" align="left">
+                <div class="btn-group" role="group" aria-label="Get profiles by">
+                    <button type="button" class="btn btn-secondary" ng-show="state !== null" (click)="getProfilesByProfile()">All</button>
+                    <button type="button" class="btn btn-secondary" ng-show="state !== null" (click)="getProfilesByProfileAndState()">{{state}}</button>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-sm-6 m-t-1" *ngIf="totalEvents > 0">
+                <input 
+                    class="form-control" 
+                    type="text" 
+                    [(ngModel)]="inputFilter" (ngModelChange)="modelFilterChange($event)" 
+                    aria-label="filters" 
+                    placeholder="{{ 'FORM.ATTR.PLACEHOLDERFILTER' | translate }}">
+                <!-- <span class="input-group-btn">
+                    <button class="btn btn-primary" aria-label="Buscar" type="button"><span class="glyphicon glyphicon-search"></span></button>
+                </span> -->
+            </div>            
+        </div>
+
+        <div class="row" *ngIf="!weHaveResults">
+            <app-loader></app-loader>
+        </div>
+        
+        <div class="row" *ngIf="weHaveResults">
+            <ul class="list-unstyled" *ngIf="totalEvents > 0; else weDontHaveRegisters">
+                <!-- <li class="col-sm-4" 
+                    *ngFor="let event of eventService.event | 
+                        filter: inputFilter | 
+                        angularPaginator: { id: 'profilesPaginator', itemsPerPage: 9, currentPage: currentPage }; let i = index"> -->
+                <li class="col-lg-4 col-md-4 col-sm-6" 
+                    *ngFor="let event of eventService.events | 
+                        filter: inputFilter | 
+                        paginate: { 
+                            itemsPerPage: 9, 
+                            currentPage: p, 
+                            totalItems: totalEvents
+                        }">        
+                    <a [routerLink]="['/events/id', event._id]" 
+                        class="panel panel-default panel-icon panel-secondary">
+                        <div class="panel-heading"><i class="fa fa-file"></i></div>
+                        <div class="panel-body">
+                            <h4>{{event.title}}</h4>
+                            <h6>{{event.address}} {{event.addressNumber}}</h6>
+                            <h6 class="text-muted">
+                                {{event.zipCode}} {{event.city}}, {{event.state}}<br />
+                                <span ng-show="event.website">{{event.website}}</span><br />
+                                <span ng-show="event.eventDay != '0'">{{event.eventDay}} // </span>
+                                <!-- 
+                                    <span ng-show="event.typeDate == 2">{{event.dateInit}} {{ 'FORM.LABEL.DATETO' | translate }} {{event.dateEnd}}</span><br />
+                                    <span ng-show="event.typeDate == 2">{{event.timeInit}} {{ 'FORM.LABEL.TIMETO' | translate }} {{event.timeEnd}}</span> 
+                                -->
+                            </h6>
+                        </div>
+                    </a>                        
+                </li>                
+            </ul>
+        </div>       
+        <div class="row" *ngIf="registersLenght > 0">
+            <div class="col-xs-12" align="right">
+                <!-- 
+                <pagination-controls 
+                    class="pagination m-t-0 m-b-0 f-right" 
+                    (pageChange)="pageChanged($event)"
+                    (pageBoundsCorrection)="pageChanged($event)"
+                    maxSize="5"
+                    directionLinks="true"
+                    autoHide="true"
+                    responsive="true"
+                    previousLabel="{{ 'PAGINATOR.ATTR.PREVIOUS' | translate }}"
+                    nextLabel="{{ 'PAGINATOR.ATTR.NEXT' | translate }}"
+                    screenReaderPaginationLabel="Pagination"
+                    screenReaderPageLabel="page"
+                    screenReaderCurrentLabel="You're on page">
+                </pagination-controls>
+                -->
+
+                <pagination-controls 
+                    class="pagination m-t-0 m-b-0" 
+                    (pageChange)="p = $event" 
+                    maxSize="5"
+                    directionLinks="true"
+                    autoHide="true"
+                    responsive="true"
+                    previousLabel="{{ 'PAGINATOR.ATTR.PREVIOUS' | translate }}"
+                    nextLabel="{{ 'PAGINATOR.ATTR.NEXT' | translate }}">
+                </pagination-controls>
+            </div>
+        </div>
+        <ng-template #weDontHaveRegisters>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-info">
+                            <p>{{ 'MESSAGES.NOTREGISTERSFOUND' | translate }} </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ng-template>  
+
+    </div>
+ </section>
+
+

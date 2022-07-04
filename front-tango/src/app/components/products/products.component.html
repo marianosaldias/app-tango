@@ -1,0 +1,180 @@
+<div class="container">
+    <ol class="breadcrumb">
+        <li><a href="#">bistró</a></li>
+        <li class="active">Product Manager</li>
+    </ol>
+</div>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1 m-b-1">
+                <div class="row">
+                    <div class="col-xs-9"><h4>Product Manager</h4></div>
+                    <div class="col-xs-3" align="right">
+                        <button class="btn btn-sm btn-primary mr-1 m-t-1" (click)="toggle()">
+                            Add product <i [ngClass]="(show)?'fa fa-minus':'fa fa-plus'"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" *ngIf="show">
+            <div class="col-md-10 col-md-offset-1">
+                <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+                    <input type="hidden" formControlName="_id" />    
+
+                    <div class="form-row row">
+                        <div class="form-group col-xs-4">
+                            <label>Type</label>
+                            <select formControlName="type" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.type.errors }">
+                                <option value=""></option>    
+                                <option *ngFor="let productType of productTypes | slice:1" 
+                                [value]="productType.value">{{productType.label}}</option>
+                            </select>
+                            <div *ngIf="submitted && f.type.errors" class="invalid-feedback">
+                                <div *ngIf="f.type.errors.required">Required</div>
+                            </div>
+                        </div>                        
+                        <div class="form-group col-xs-8">
+                            <label>First Name</label>
+                            <input type="text" formControlName="name" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.name.errors }" />
+
+                            <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+                                <div *ngIf="f.name.errors.required">First Name is required</div>
+                                <div *ngIf="f.name.errors.minlength">Take care of the lenght</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="form-group col-xs-12">
+                            <label>Description</label>
+                            <textarea formControlName="description" class="form-control" rows="3"></textarea>
+                        </div>                        
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="form-group col-sm-4">
+                            <label>Status</label>
+                            <select formControlName="status" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.status.errors }">
+                                <option value=""></option>
+                                <option value="Enabled">Activo</option>
+                                <option value="Disabled">Inactivo</option>
+                                <option value="Happy">Happy</option>
+                            </select>
+
+                            <div *ngIf="submitted && f.status.errors" class="invalid-feedback">
+                                <div *ngIf="f.status.errors.required">Required</div>
+                            </div>
+                        </div>  
+                        <div class="form-group col-sm-4">
+                            <label>Price</label>
+                            <input type="number" formControlName="price" class="form-control" pattern="^[0-9]+(\.[0-9]{1,2})?$" 
+                            [ngClass]="{ 'is-invalid': submitted && f.price.errors }" />
+
+                            <div *ngIf="submitted && f.price.errors" class="invalid-feedback">
+                                <div *ngIf="f.price.errors.required">Price is required</div>
+                                <div *ngIf="f.price.errors.pattern">Only numbers</div>
+                            </div>
+                        </div> 
+                        <div class="form-group col-sm-4">
+                            <label>Happy Index</label>
+                            <input type="text" formControlName="happyIndex" class="form-control" pattern="^[]|[0-9]+(\.[0-9]{1,2})?$" 
+                            [ngClass]="{ 'is-invalid': submitted && f.happyIndex.errors }" />
+
+                            <div *ngIf="submitted && f.happyIndex.errors" class="invalid-feedback">
+                                <div *ngIf="f.happyIndex.errors.required">Happy Index is required</div>
+                                <div *ngIf="f.happyIndex.errors.pattern">Only numbers</div>
+                            </div>                            
+                        </div>                                                
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary mr-1">Save product</button>
+                            <button class="btn btn-secondary m-l-1" type="reset" (click)="onReset()">Reset</button>
+                        </div>
+                    </div>
+                </form>             
+            </div>
+        </div>
+
+        <div class="row m-t-1">
+            <div class="col-md-10 col-md-offset-1 m-b-1">
+                <p>Filter by:</p>
+                <ul class="list-inline">
+                    <li *ngFor="let productType of productTypes">
+                        <button type="button" class="btn btn-success btn-sm"
+                        [ngClass]="{
+                            'btn-success': productType.value == '',
+                            'btn-primary': productType.value != ''
+                            }" 
+                        (click)="setFilter(productType.value)">{{productType.label}}</button>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-md-10 col-md-offset-1">
+                <table class="table table-striped" [mfData]="productService.products" #mf="mfDataTable" [mfRowsOnPage]="5" *ngIf="productCounter > 0; else noRecord">
+                    <thead>
+                        <tr>
+                            <th>
+                                <mfDefaultSorter by="type">Type</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="name">Product</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="status">Status</mfDefaultSorter>
+                            </th>
+                            <th>
+                                <mfDefaultSorter by="price">Price</mfDefaultSorter>
+                            </th>
+                            <th width="150">
+                                <mfDefaultSorter></mfDefaultSorter>
+                            </th>                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let product of mf.data">
+                            <td>{{product.type}}</td>
+                            <td>
+                                {{ product.name }}<br />
+                                <small>{{ product.description }}</small>                                
+                            </td>
+                            <td>{{product.status}}</td>
+                            <td class="text-right">{{product.price}}</td>
+                            <td class="text-center">
+                                <a (click)="editProduct(product)">
+                                    <button class="btn btn-primary btn-sm"><i class="fa fa-edit"></i></button>
+                                </a>
+                                <a class="m-l-1" (click)="deleteProduct(product._id)">
+                                    <button class="btn btn-danger btn-sm"><i class="fa fa-trash-o"></i></button>
+                                </a>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="6">
+                                <mfBootstrapPaginator [rowsOnPageSet]="[5,10,25]"></mfBootstrapPaginator>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>  
+
+                <ng-template #noRecord>
+                    <div class="alert alert-warning">
+                        <p>There are not records of <b>{{ prodFilter | lowercase }}</b></p>
+                    </div>
+                </ng-template>  
+
+            </div>            
+        </div>
+    </div>
+
+</section>

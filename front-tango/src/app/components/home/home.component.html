@@ -1,0 +1,193 @@
+<section class="jumbotron" style="background-image:url('https://www.bailaba.com.ar/wp-content/uploads/2015/08/lugares-para-bailar-tango-en-buenos-aires.jpg'); background-position: center; background-size: cover;">
+   <div class="jumbotron_body jumbotron_body-lg">
+   <div class="container">
+      <div class="row">
+         <div class="col-md-12">
+         <h2 class="text-center">What are you looking for?</h2>
+         </div>
+      </div>
+      <div class="row">
+         <div class="col-md-6 col-md-offset-3">
+         <form role="search">
+            <div class="input-group input-group-lg">
+               <input class="form-control" type="text" aria-label="Look for services and benefits" placeholder="Look for services and benefits">
+               <span class="input-group-btn">
+               <button class="btn btn-primary" aria-label="Buscar" type="button"><span class="glyphicon glyphicon-search"></span></button>
+               </span>
+            </div>
+         </form>
+         </div>
+      </div>
+   </div>
+   </div>
+   <div class="overlay"></div>
+</section>
+
+<app-by-profile 
+   [profileFilter]="'Master'">
+</app-by-profile>
+
+<section>
+   <div class="container">
+      <div class="row">
+         <div class="col-xs-12">
+            <button type="button" class="btn btn-primary" (click)="getLocation()">Get my location</button>
+         </div>
+      </div>
+   </div>
+</section>
+
+<section>
+   <div class="container">
+
+   <div class="row apps">
+      <div class="col-md-8 col-md-offset-2">
+         <a id="appAlert" class="alert alert-info visible-xs" href="/app">
+         <div class="media">
+            <div class="media-left media-middle">
+               <i class="fa fa-mobile fa-fw fa-3x"></i>
+            </div>
+            <div class="media-body media-middle">
+               <h5 class="m-y-0">Descargá la aplicación.</h5>
+               <p id="appAlertText" class="m-y-0">Disponible para Android y iOS.</p>
+            </div>
+         </div>
+         </a>  
+      </div>
+   </div> 
+   <div>
+      <div class="panel-pane pane-texto">
+         <div class="pane-content">
+            <div class="">
+               <div class="row apps">
+                  <div class="col-md-8 col-md-offset-2">
+                     <a id="appAlert" class="alert alert-info visible-xs" href="">
+                        <div class="media">
+                           <div class="media-left media-middle"> <i class="fa fa-mobile fa-fw fa-3x"></i></div>
+                           <div class="media-body media-middle">
+                              <h5 class="m-y-0">Descargá la aplicación.</h5>
+                              <p id="appAlertText" class="m-y-0">Disponible para Android y iOS.</p>
+                           </div>
+                        </div>
+                     </a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+
+   <!-- <div class="panel-separator"></div>
+
+   <div class="panel-pane pane-atajos">
+      <div class="pane-content">
+         <div class="row panels-row" id="destacados">
+            <div class="col-xs-12 col-sm-6 col-md-3">
+               <a class="panel panel-default" href="">
+               <div class="panel-heading" style="background-image:url(https://media.lacapital.com.ar/adjuntos/203/imagenes/005/327/0005327102.png);"></div>
+               <div class="panel-body">
+                  <h4>The Best Djs</h4>
+                  <div class="text-muted">
+                     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                  </div>
+               </div></a>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3">
+               <a class="panel panel-default" href="">
+               <div class="panel-heading" style="background-image:url(https://www.tec.ac.cr/hoyeneltec/sites/default/files/styles/colorbox/public/media/img/main/sa_0.jpg);"></div>
+               <div class="panel-body">
+                  <h4>Master Classes</h4>
+                  <div class="text-muted">
+                     <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Rem ut itaque quo suscipit.</p>
+                  </div>
+               </div></a>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3">
+               <a class="panel panel-default" href="">
+               <div class="panel-heading" style="background-image:url(http://www.yirayiramilonga.com.ar/images/apaisado-misterios-w.png);"></div>
+               <div class="panel-body">
+                  <h4>La Misteriosa</h4>
+                  <div class="text-muted">
+                     <p>Mollitia corporis asperis voluptatum reprerit aliquam.</p>
+                  </div>
+               </div></a>
+            </div>
+            <div class="col-xs-12 col-sm-6 col-md-3">
+               <a class="panel panel-default" href="https://www.argentina.gob.ar/miargentina">
+               <div class="panel-heading" style="background-image:url(https://www.argentina.gob.ar/sites/default/files/styles/listado/public/imagenAtajo/mi-argentina.jpg?itok=2irqiktI);"></div>
+               <div class="panel-body">
+                  <h4>HiTango App</h4>
+                  <div class="text-muted">
+                     <p>Adipisicing elit. Fugit consequatur nihil corporis non nisi dicta voluptatem.</p>
+                  </div>
+               </div></a>
+            </div>
+         </div>
+      </div>
+   </div> -->
+
+   <div class="panel-separator"></div>
+
+   <div class="panel-pane pane-texto">
+      <div class="pane-content">
+         <div class="">
+            <section class="m-y-0 p-y-1">
+               <div class="">
+                  <h2>Trámites y servicios</h2>
+                  <div class="row panels-row m-t-2">
+                     <div class="col-xs-12 col-sm-4 col-md-4">
+                        <a class="panel panel-default" href="">
+                        <div class="panel-body">
+                           <div class="media">
+                              <div class="media-left padding-20">
+                                 <i class="fa fa-id-card-o fa-fw fa-2x text-primary"></i>
+                              </div>
+                              <div class="media-body">
+                                 <h3>Orders</h3>
+                                 <p>Facere at totam, beatae repudiandae qui porro et libero.</p>
+                              </div>
+                           </div>
+                        </div></a>
+                     </div>
+                     <div class="col-xs-12 col-sm-4 col-md-4">
+                        <a class="panel panel-default" href="">
+                        <div class="panel-body">
+                           <div class="media">
+                              <div class="media-left padding-20">
+                                 <i class="fa icono-arg-trabajador fa-fw fa-2x text-primary"></i>
+                              </div>
+                              <div class="media-body">
+                                 <h3>Products</h3>
+                                 <p>Impedit minus blanditiis tenetur quos cumque hic repellat</p>
+                              </div>
+                           </div>
+                        </div></a>
+                     </div>
+                     <div class="col-xs-12 col-sm-4 col-md-4">
+                        <a class="panel panel-default" href="">
+                        <div class="panel-body">
+                           <div class="media">
+                              <div class="media-left padding-20">
+                                 <i class="fa icono-arg-medicamentos fa-fw fa-2x text-primary"></i>
+                              </div>
+                              <div class="media-body">
+                                 <h3>Users</h3>
+                                 <p>Beatae dolor provident corporis suscipit quae nobis deserunt.</p>
+                              </div>
+                           </div>
+                        </div></a>
+                     </div>
+                  </div>
+               </div>
+            </section>
+         </div>
+      </div>
+   </div>
+
+   <div class="panel-separator"></div>
+
+   </div>
+
+
+   </div>
+</section>
+

@@ -1,0 +1,73 @@
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-3">
+                <h1>Login Form</h1>           
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-3">
+                <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+                    <div class="form-row row">
+                        <div class="form-group col-sm-12">
+                            <label>Email</label>
+                            <input type="text" formControlName="email" autocomplete="off" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.email.errors }" />
+
+                            <div *ngIf="submitted && f.email.errors" class="invalid-feedback">
+                                <div *ngIf="f.email.errors.required">Email is required</div>
+                                <div *ngIf="f.email.errors.email">Email must be a valid email address</div>
+                            </div>
+                        </div>                        
+                    </div>
+                    <div class="form-row row">
+                        <div class="form-group col-xs-12">
+                            <label>Password</label>
+                            <input type="password" formControlName="password" autocomplete="off" class="form-control" 
+                            [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+
+                            <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                                <div *ngIf="f.password.errors.required">Password is required</div>
+                                <div *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row row">
+                        <div class="col-md-12">
+                            <button class="btn btn-primary mr-1">Login</button>
+                            <button class="btn btn-secondary m-l-1" type="reset" (click)="onReset()">Reset</button>
+                        </div>
+                    </div>
+                </form>   
+                
+                <!--
+                <br>
+                <h5><u>Errores del campo nombre</u></h5>
+                <pre>{{f.controls.nombre.errors | json}}</pre>
+                <h5><u>Datos del formulario reactivo</u></h5>
+                <pre>{{f.value | json}}</pre>
+                -->
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-6 col-xs-offset-3">
+                <hr>
+                <p><a routerLink="/requestPassword">I forgot my password</a></p>
+                <p><a routerLink="/register">Create my account</a></p>
+            </div>
+        </div>        
+
+        <div class="row m-t-1">
+            <div class="col-xs-6 col-xs-offset-3">
+                <app-message-box [error]="errObj"></app-message-box>
+            </div>
+        </div>        
+
+    </div>
+
+</section>
